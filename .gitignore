@@ -1,0 +1,40 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+dist/
+build/
+.strapi/
+.turbo/
+
+# Env files
+.env
+.env.local
+.env.*.local
+
+# Strapi
+apps/cms/.tmp/
+apps/cms/public/uploads/*
+!apps/cms/public/uploads/.gitkeep
+apps/cms/license.txt
+apps/cms/.strapi-updater.json
+apps/cms/.strapi-cloud.json
+apps/cms/exports/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Editor / OS
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Misc
+*.sqlite
+*.sqlite3
+.eslintcache
+.tsbuildinfo
