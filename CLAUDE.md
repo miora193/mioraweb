@@ -113,14 +113,25 @@ inside `apps/web` or `apps/cms`.
 - Adding a project is entirely an admin-panel task (`/admin` →
   Content Manager → Project). No frontend deploy needed to publish new work.
 
-### Known gotcha (already fixed here, don't reintroduce it)
+### Known gotchas (already fixed here, don't reintroduce them)
 
-Strapi's generated `.env` ships `DATABASE_FILENAME=` (empty string). Strapi's
-`env()` helper treats an empty string as "explicitly set" rather than falling
-back to its default, so the sqlite filename resolves to a directory instead
-of a file and the app fails to boot with a cryptic `SqliteError: unable to
-open database file`. Keep `DATABASE_FILENAME=.tmp/data.db` explicit in
-`.env` for local/sqlite setups.
+- Strapi's generated `.env` ships `DATABASE_FILENAME=` (empty string). Strapi's
+  `env()` helper treats an empty string as "explicitly set" rather than falling
+  back to its default, so the sqlite filename resolves to a directory instead
+  of a file and the app fails to boot with a cryptic `SqliteError: unable to
+  open database file`. Keep `DATABASE_FILENAME=.tmp/data.db` explicit in
+  `.env` for local/sqlite setups.
+- Every `@strapi/*` package in `apps/cms/package.json` must stay pinned to the
+  *exact same version* (no `^`/`~` ranges) — they're internal packages of one
+  coordinated Strapi release and share code like `@strapi/utils`. Adding a
+  new one (an upload provider, a plugin) with a loose range lets it resolve
+  to a different patch version than the rest, pulling in a second, mismatched
+  copy of a shared internal package. Under npm's flat `node_modules` (what
+  Render uses — see below) that produces exactly the kind of "x is not a
+  function" admin-panel crash that's miserable to debug, even though it can
+  go unnoticed locally under pnpm's isolated `node_modules`. This bit us
+  adding `@strapi/provider-upload-cloudinary` — fixed by pinning it to
+  `5.50.0` to match everything else.
 
 ## Deployment (free-tier friendly, target audience is small local businesses)
 
@@ -129,8 +140,10 @@ open database file`. Keep `DATABASE_FILENAME=.tmp/data.db` explicit in
   `apps/web/vercel.json` has the SPA rewrite so client-side routes don't 404
   on refresh.
 - **apps/cms** → Render (or Railway/Fly) free tier. Root Directory =
-  `apps/cms`. Build command `pnpm build`, start command `pnpm start`. Set
-  `DATABASE_CLIENT=postgres` + `DATABASE_URL` (a free Postgres from
+  `apps/cms`. Build command `npm install && npm run build`, start command
+  `npm start` — Render builds this directory standalone (it has no lockfile
+  of its own; the root `pnpm-lock.yaml` covers local dev only), so use npm
+  here, not pnpm. Set `DATABASE_CLIENT=postgres` + `DATABASE_URL` (a free Postgres from
   Supabase or Neon — Render's free web services have an ephemeral
   filesystem, so SQLite does not persist between deploys/restarts there).
   Set `FRONTEND_URL` to the Vercel URL so CORS allows the site to fetch data.
