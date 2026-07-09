@@ -86,18 +86,24 @@ inside `apps/web` or `apps/cms`.
   sort — the frontend requests `sort=order:asc`).
 - Plus a single type, `api::site-setting.site-setting`
   (`apps/cms/src/api/site-setting/`), for everything the studio should be
-  able to change without a code deploy: `siteName`, `logo` (optional image —
-  header falls back to a text wordmark split on the first space when unset),
-  `headingFont` / `bodyFont` (Google Font family names), `colorPaper` /
-  `colorLinen` / `colorInk` (hex strings), `footerTagline`, `footerEmail`,
-  `footerInstagramUrl`, `footerLinkedinUrl`. `draftAndPublish` is off for
-  this one — edits go live on Save, no publish step. The frontend
+  able to change without a code deploy: `siteName`, `logo` (optional image,
+  rendered as a fixed-size circle via `object-cover` so any aspect ratio
+  crops cleanly — header falls back to a text wordmark split on the first
+  space when unset), `headerCtaLabel`, `heroEyebrow` / `heroHeading` /
+  `heroSubtext`, `projectsSectionHeading`, `headingFont` / `bodyFont`
+  (Google Font family names), `colorPaper` / `colorLinen` / `colorInk` (hex
+  strings), `footerTagline`, `footerEmail`, `footerInstagramUrl`,
+  `footerLinkedinUrl`. `draftAndPublish` is off for this one — edits go
+  live on Save, no publish step. The frontend
   (`src/lib/SiteSettingsContext.tsx`) fetches it once, overrides the
   `--color-*`/`--font-*` CSS custom properties on `:root` at runtime (Tailwind
   v4's utilities reference those vars directly, so this "just works" without
   a rebuild), and lazily injects a Google Fonts `<link>` for any font that
-  isn't Fraunces/Inter. Bootstrap seeds a default entry matching the
-  original hardcoded design so nothing breaks before someone edits it.
+  isn't Fraunces/Inter. Fetched settings are merged over hardcoded defaults
+  (null/missing fields fall back rather than rendering blank), and bootstrap
+  both seeds a fresh entry and backfills any fields missing from an
+  already-existing one — so adding a new editable field later doesn't
+  require a manual migration on already-deployed CMS instances.
 - Public read access: `src/index.ts` bootstrap function grants the `public`
   role `find`/`findOne` permissions on `project`, and `find` on
   `site-setting`, automatically on first boot, so the frontend can hit the

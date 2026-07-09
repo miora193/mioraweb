@@ -522,9 +522,17 @@ export interface ApiSiteSettingSiteSetting extends Struct.SingleTypeSchema {
     footerLinkedinUrl: Schema.Attribute.String;
     footerTagline: Schema.Attribute.Text &
       Schema.Attribute.DefaultTo<"Let's build your digital presence.">;
+    headerCtaLabel: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'Start a project'>;
     headingFont: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'Fraunces'>;
+    heroEyebrow: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'Web design studio'>;
+    heroHeading: Schema.Attribute.Text &
+      Schema.Attribute.DefaultTo<'Modern websites for hotels, cafes & hospitality brands.'>;
+    heroSubtext: Schema.Attribute.Text &
+      Schema.Attribute.DefaultTo<'MIORA WEB designs and builds clean, considered digital experiences for independent hospitality businesses that want to feel as good online as they do in person.'>;
     locale: Schema.Attribute.String & Schema.Attribute.Private;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -532,6 +540,8 @@ export interface ApiSiteSettingSiteSetting extends Struct.SingleTypeSchema {
     > &
       Schema.Attribute.Private;
     logo: Schema.Attribute.Media<'images'>;
+    projectsSectionHeading: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'Selected work'>;
     publishedAt: Schema.Attribute.DateTime;
     siteName: Schema.Attribute.String &
       Schema.Attribute.Required &

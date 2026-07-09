@@ -22,6 +22,26 @@
       "multiple": false,
       "allowedTypes": ["images"]
     },
+    "headerCtaLabel": {
+      "type": "string",
+      "default": "Start a project"
+    },
+    "heroEyebrow": {
+      "type": "string",
+      "default": "Web design studio"
+    },
+    "heroHeading": {
+      "type": "text",
+      "default": "Modern websites for hotels, cafes & hospitality brands."
+    },
+    "heroSubtext": {
+      "type": "text",
+      "default": "MIORA WEB designs and builds clean, considered digital experiences for independent hospitality businesses that want to feel as good online as they do in person."
+    },
+    "projectsSectionHeading": {
+      "type": "string",
+      "default": "Selected work"
+    },
     "headingFont": {
       "type": "string",
       "required": true,

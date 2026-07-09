@@ -4,6 +4,12 @@ import type { SiteSettings } from "../types/site-settings";
 
 const DEFAULT_SETTINGS: SiteSettings = {
   siteName: "MIORA WEB",
+  headerCtaLabel: "Start a project",
+  heroEyebrow: "Web design studio",
+  heroHeading: "Modern websites for hotels, cafes & hospitality brands.",
+  heroSubtext:
+    "MIORA WEB designs and builds clean, considered digital experiences for independent hospitality businesses that want to feel as good online as they do in person.",
+  projectsSectionHeading: "Selected work",
   headingFont: "Fraunces",
   bodyFont: "Inter",
   colorPaper: "#FFFFFF",
@@ -12,6 +18,13 @@ const DEFAULT_SETTINGS: SiteSettings = {
   footerTagline: "Let's build your digital presence.",
   footerEmail: "hello@miora.web",
 };
+
+function mergeWithDefaults(fetched: SiteSettings): SiteSettings {
+  const definedFields = Object.fromEntries(
+    Object.entries(fetched).filter(([, value]) => value !== null && value !== undefined),
+  );
+  return { ...DEFAULT_SETTINGS, ...definedFields } as SiteSettings;
+}
 
 // Fraunces/Inter are already linked in index.html — skip re-fetching those.
 const loadedFonts = new Set<string>(["Fraunces", "Inter"]);
@@ -44,7 +57,7 @@ export function SiteSettingsProvider({ children }: { children: ReactNode }) {
     let cancelled = false;
     getSiteSettings()
       .then((data) => {
-        if (!cancelled) setSettings(data);
+        if (!cancelled) setSettings(mergeWithDefaults(data));
       })
       .catch(() => {
         // CMS unreachable or not yet configured — keep the built-in defaults.
