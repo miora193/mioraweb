@@ -73,6 +73,12 @@ since the frontend fetches from the CMS at runtime.
    have an ephemeral disk, so SQLite won't persist between restarts there.
 4. Set `FRONTEND_URL` to your Vercel URL so the CMS's CORS config allows the
    site to fetch data.
+5. Add a free [Cloudinary](https://cloudinary.com) account and set
+   `CLOUDINARY_NAME` / `CLOUDINARY_KEY` / `CLOUDINARY_SECRET` — the same
+   ephemeral disk that loses SQLite also loses any uploaded images
+   (project covers, logo, etc.) on every redeploy, so uploads need to live
+   somewhere else in production. Without these, everything still works
+   locally, but uploaded media on Render will 404 after the next deploy.
 
 See `CLAUDE.md` for the reasoning behind these choices and a few gotchas
 worth knowing about before you touch the Strapi config.

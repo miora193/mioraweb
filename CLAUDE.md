@@ -137,6 +137,15 @@ open database file`. Keep `DATABASE_FILENAME=.tmp/data.db` explicit in
   Free-tier CMS hosts spin down when idle; the first admin request after
   idle will be slow to wake up. That's expected and fine for this project's
   traffic level.
+- **Media uploads on Render**: the same ephemeral filesystem that loses
+  SQLite also loses anything written to `apps/cms/public/uploads` — every
+  redeploy/restart wipes uploaded files even though the DB row referencing
+  them survives (in Postgres), so images 404 after the next deploy. Set
+  `CLOUDINARY_NAME` / `CLOUDINARY_KEY` / `CLOUDINARY_SECRET` (free Cloudinary
+  account) in production and `config/plugins.ts` automatically switches the
+  upload provider to Cloudinary — see the comment there. Local dev has no
+  Cloudinary env vars set, so it keeps using local disk; no account needed
+  just to run the app.
 
 ## Conventions
 
