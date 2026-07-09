@@ -54,15 +54,20 @@ inside `apps/web` or `apps/cms`.
 
 ### Brand
 
-- Colors: `#FFFFFF` (paper), `#E4E1D9` (linen — section backgrounds, card
-  placeholders), `#000000` (ink — text, buttons, borders at low opacity).
-  Intentionally just these three. No added accent color: the studio's own
-  site should read as calm and monochrome so the *project photography* does
-  the visual work, not the UI chrome. Muted text/borders are black at
-  reduced opacity rather than a separate gray, so the palette stays
-  internally consistent.
-- Type: **Fraunces** (serif, display/headings) paired with **Inter** (sans,
-  body/UI). Loaded via Google Fonts `<link>` tags in `index.html`.
+- Default palette: `#FFFFFF` (paper), `#E4E1D9` (linen — section
+  backgrounds, card placeholders), `#000000` (ink — text, buttons, borders
+  at low opacity). Intentionally just these three by default. No added
+  accent color: the studio's own site should read as calm and monochrome so
+  the *project photography* does the visual work, not the UI chrome. Muted
+  text/borders are black at reduced opacity rather than a separate gray, so
+  the palette stays internally consistent.
+- Default type: **Fraunces** (serif, display/headings) paired with
+  **Inter** (sans, body/UI). Both linked in `index.html` as the no-JS
+  fallback.
+- All of the above (colors, both fonts, logo, footer copy) are editable
+  live from Strapi's Site Settings single type — see the `apps/cms` section
+  below. Don't hardcode a new color/font elsewhere in `apps/web`; route it
+  through `SiteSettings` instead, or the CMS-editability breaks silently.
 - Keep layouts generous on whitespace and let images breathe — this is an
   editorial/hospitality aesthetic (think boutique hotel brochure), not a
   dense SaaS UI.
@@ -73,15 +78,30 @@ inside `apps/web` or `apps/cms`.
   gitignored). Swap to Postgres in production via env vars — see
   `apps/cms/.env.example` and `config/database.ts` (already reads
   `DATABASE_CLIENT` / `DATABASE_URL`).
-- Content model: single collection type, `api::project.project`
+- Content model: a collection type, `api::project.project`
   (`apps/cms/src/api/project/`). Fields: `title`, `slug` (uid from title),
   `summary`, `description` (richtext), `category` (enum), `client`,
   `location`, `year`, `websiteUrl`, `cover` (single image, required),
   `gallery` (multiple images), `featured` (bool), `order` (int, for manual
   sort — the frontend requests `sort=order:asc`).
+- Plus a single type, `api::site-setting.site-setting`
+  (`apps/cms/src/api/site-setting/`), for everything the studio should be
+  able to change without a code deploy: `siteName`, `logo` (optional image —
+  header falls back to a text wordmark split on the first space when unset),
+  `headingFont` / `bodyFont` (Google Font family names), `colorPaper` /
+  `colorLinen` / `colorInk` (hex strings), `footerTagline`, `footerEmail`,
+  `footerInstagramUrl`, `footerLinkedinUrl`. `draftAndPublish` is off for
+  this one — edits go live on Save, no publish step. The frontend
+  (`src/lib/SiteSettingsContext.tsx`) fetches it once, overrides the
+  `--color-*`/`--font-*` CSS custom properties on `:root` at runtime (Tailwind
+  v4's utilities reference those vars directly, so this "just works" without
+  a rebuild), and lazily injects a Google Fonts `<link>` for any font that
+  isn't Fraunces/Inter. Bootstrap seeds a default entry matching the
+  original hardcoded design so nothing breaks before someone edits it.
 - Public read access: `src/index.ts` bootstrap function grants the `public`
-  role `find`/`findOne` permissions on `project` automatically on first boot,
-  so the frontend can hit `/api/projects` without an API token. Do not
+  role `find`/`findOne` permissions on `project`, and `find` on
+  `site-setting`, automatically on first boot, so the frontend can hit the
+  API without an API token. Do not
   remove this — without it every fresh Strapi instance starts with the API
   locked down and the site shows nothing.
 - Adding a project is entirely an admin-panel task (`/admin` →

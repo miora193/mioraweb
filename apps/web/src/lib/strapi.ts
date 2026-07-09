@@ -1,4 +1,10 @@
-import type { Project, StrapiListResponse, StrapiMedia } from "../types/project";
+import type {
+  Project,
+  StrapiListResponse,
+  StrapiMedia,
+  StrapiSingleResponse,
+} from "../types/project";
+import type { SiteSettings } from "../types/site-settings";
 
 export const STRAPI_URL: string =
   import.meta.env.VITE_STRAPI_URL ?? "http://localhost:1337";
@@ -28,4 +34,11 @@ export async function getProjectBySlug(slug: string): Promise<Project | null> {
     `/projects?filters[slug][$eq]=${encodeURIComponent(slug)}&populate=cover,gallery`,
   );
   return data[0] ?? null;
+}
+
+export async function getSiteSettings(): Promise<SiteSettings> {
+  const { data } = await fetchJson<StrapiSingleResponse<SiteSettings>>(
+    "/site-setting?populate=logo",
+  );
+  return data;
 }

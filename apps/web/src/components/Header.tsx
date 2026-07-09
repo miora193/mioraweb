@@ -1,11 +1,31 @@
 import { Link } from "react-router-dom";
+import { useSiteSettings } from "../lib/SiteSettingsContext";
 
 export default function Header() {
+  const { settings, logoUrl } = useSiteSettings();
+
+  // Text wordmark splits on the first space (bold + muted) to echo the
+  // logo-less "MIORA WEB" look for any two-word site name; single-word
+  // names just render plain.
+  const [firstWord, ...rest] = settings.siteName.split(" ");
+  const restOfName = rest.join(" ");
+
   return (
     <header className="sticky top-0 z-50 border-b border-black/10 bg-paper/90 backdrop-blur">
       <div className="container-page flex h-16 items-center justify-between sm:h-20">
-        <Link to="/" className="font-display text-lg tracking-tight sm:text-xl">
-          MIORA <span className="text-black/50">WEB</span>
+        <Link to="/" className="flex items-center">
+          {logoUrl ? (
+            <img
+              src={logoUrl}
+              alt={settings.siteName}
+              className="h-8 w-auto object-contain sm:h-9"
+            />
+          ) : (
+            <span className="font-display text-lg tracking-tight sm:text-xl">
+              {firstWord}
+              {restOfName && <span className="text-black/50"> {restOfName}</span>}
+            </span>
+          )}
         </Link>
         <a
           href="#contact"

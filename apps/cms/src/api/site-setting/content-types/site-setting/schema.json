@@ -1,0 +1,68 @@
+{
+  "kind": "singleType",
+  "collectionName": "site_settings",
+  "info": {
+    "singularName": "site-setting",
+    "pluralName": "site-settings",
+    "displayName": "Site Settings",
+    "description": "Global branding and content — logo, fonts, brand colors, footer. Edit here instead of in code."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "siteName": {
+      "type": "string",
+      "required": true,
+      "default": "MIORA WEB"
+    },
+    "logo": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": ["images"]
+    },
+    "headingFont": {
+      "type": "string",
+      "required": true,
+      "default": "Fraunces"
+    },
+    "bodyFont": {
+      "type": "string",
+      "required": true,
+      "default": "Inter"
+    },
+    "colorPaper": {
+      "type": "string",
+      "required": true,
+      "default": "#FFFFFF",
+      "regex": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+    },
+    "colorLinen": {
+      "type": "string",
+      "required": true,
+      "default": "#E4E1D9",
+      "regex": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+    },
+    "colorInk": {
+      "type": "string",
+      "required": true,
+      "default": "#000000",
+      "regex": "^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$"
+    },
+    "footerTagline": {
+      "type": "text",
+      "default": "Let's build your digital presence."
+    },
+    "footerEmail": {
+      "type": "string",
+      "default": "hello@miora.web"
+    },
+    "footerInstagramUrl": {
+      "type": "string"
+    },
+    "footerLinkedinUrl": {
+      "type": "string"
+    }
+  }
+}
