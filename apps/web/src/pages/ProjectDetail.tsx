@@ -53,7 +53,19 @@ export default function ProjectDetail() {
         &larr; Back to work
       </Link>
 
-      <h1 className="mt-6 font-display text-4xl sm:text-5xl">{project.title}</h1>
+      <div className="mt-6 flex flex-wrap items-start justify-between gap-4">
+        <h1 className="font-display text-4xl sm:text-5xl">{project.title}</h1>
+        {project.websiteUrl && (
+          <a
+            href={project.websiteUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex shrink-0 items-center gap-2 rounded-full border border-black px-5 py-2 text-sm transition-colors hover:bg-black hover:text-paper"
+          >
+            Visit live site &#8599;
+          </a>
+        )}
+      </div>
       {project.summary && (
         <p className="mt-4 max-w-2xl text-lg text-black/60">{project.summary}</p>
       )}
