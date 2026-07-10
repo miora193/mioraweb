@@ -15,10 +15,10 @@
     "upgrade:dry": "npx @strapi/upgrade latest --dry"
   },
   "dependencies": {
-    "@strapi/plugin-cloud": "5.50.0",
-    "@strapi/plugin-users-permissions": "5.50.0",
-    "@strapi/provider-upload-cloudinary": "5.50.0",
-    "@strapi/strapi": "5.50.0",
+    "@strapi/plugin-cloud": "5.50.1",
+    "@strapi/plugin-users-permissions": "5.50.1",
+    "@strapi/provider-upload-cloudinary": "5.50.1",
+    "@strapi/strapi": "5.50.1",
     "better-sqlite3": "12.8.0",
     "pg": "^8.22.0",
     "react": "^18.0.0",
@@ -37,7 +37,7 @@
     "npm": ">=6.0.0"
   },
   "strapi": {
-    "uuid": "1b7a99e9-b012-4c5e-8a0d-27ca70094e92",
-    "installId": "a7f30c931a416e24800448e36a303a0e071db2a7956f4f443213326bb2a7796a"
+    "uuid": "ea1f27d1-e6d6-4a77-bcc9-5a0351fe3b58",
+    "installId": "a6f8d7fe9ef829a14b1ddae3fa7e7feecc68581fca8f7667a0205a219cb8d710"
   }
 }
